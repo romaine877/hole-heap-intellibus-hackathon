@@ -1,11 +1,22 @@
-import { Link, Tabs } from 'expo-router';
+import { Link, Redirect, Tabs } from 'expo-router';
 
 import { HeaderButton } from '../../components/HeaderButton';
 import { TabBarIcon } from '../../components/TabBarIcon';
+import { useAuthStore } from '~/store/authStore';
+import { useEffect } from 'react';
 
 export default function TabLayout() {
+
+    const{token} = useAuthStore()
+  
+  if(!token) {
+    return <Redirect href="/landing" />;
+  }
+
+  
   return (
     <Tabs
+  
       screenOptions={{
         tabBarActiveTintColor: 'black',
       }}>

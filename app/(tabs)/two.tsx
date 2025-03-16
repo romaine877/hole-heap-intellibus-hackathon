@@ -6,8 +6,8 @@ import { ScreenContent } from '~/components/ScreenContent';
 export default function Home() {
   return (
     <>
-      <Stack.Screen options={{ title: 'Tab Two' }} />
-      <View style={styles.container}>
+      <Stack.Screen options={{ headerShown: false }} />
+      <View className="bg-red-600">
         <ScreenContent path="app/(tabs)/two.tsx" title="Tab Two" />
       </View>
     </>
