@@ -1,36 +1,37 @@
-import { View, Text } from "react-native";
-import React, { useState } from "react";
-
-import { TextInput } from "react-native";
+import React from "react";
+import { Text, TextInput, View } from "react-native";
+import { useThemeStore } from "~/store/themeStore";
 
 interface TextFieldProps {
-  value: string;
-  onChangeText: (text: string) => void;
   title: string;
-  isError?: boolean;
+  value: string;
+  darkMode: boolean;
+  onChangeText: (text: string) => void;
 }
 
 export default function TextField({
+  title,
   value,
   onChangeText,
-  title,
-  isError,
+  darkMode,
 }: TextFieldProps) {
-
-    const [isFocus, setIsFocus] = useState(false);
+  const { isDarkMode } = useThemeStore();
 
   return (
-    <View className="flex-col my-4">
-      <Text className="">{title}</Text>
-
+    <View className="mb-4 px-4">
+      <Text
+        className={`mb-2 font-bold ${isDarkMode ? "text-white" : "text-black"}`}
+      >
+        {title}
+      </Text>
       <TextInput
-        placeholder="Email"
         value={value}
-        autoCapitalize="none"
         onChangeText={onChangeText}
-        onFocus={() => setIsFocus(true)}
-        onBlur={() => setIsFocus(false)}
-        className={`border-2 ${isError ? "border-red-500" : isFocus ? "" : "border-gray-400"} p-4 rounded-lg bg-gray-200 ${isFocus ? "bg-gray-300" : ""}`}
+        className={`border p-2 rounded-md ${
+          isDarkMode
+            ? "bg-gray-400 border-gray-200 text-white"
+            : "bg-white border-gray-300 text-black"
+        }`}
       />
     </View>
   );

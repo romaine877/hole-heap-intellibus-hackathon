@@ -1,33 +1,28 @@
+import React, { useEffect } from "react";
 import {
   View,
   Text,
-  Pressable,
-  TextInput,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
 } from "react-native";
-import React, { useEffect } from "react";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import { auth } from "~/utils/firebase";
 import { SafeAreaView } from "react-native-safe-area-context";
-import AppLogo from "../assets/app-logo.svg";
-import LoginSwitcher from "~/components/LoginSwitcher";
-import TextField from "~/components/TextField";
-import { Button } from "~/components/Button";
-import LoginView from "~/components/views/LoginView";
-import SignupView from "~/components/views/SignupView";
-import { Redirect } from "expo-router";
-import { useAuthStore } from "~/store/authStore";
 import Toast from "react-native-toast-message";
 
+import AppLogo from "../assets/app-logo.svg";
+
+import LoginSwitcher from "~/components/LoginSwitcher";
+import LoginView from "~/components/views/LoginView";
+import SignupView from "~/components/views/SignupView";
+import { useAuthStore } from "~/store/authStore";
+import { useThemeStore } from "~/store/themeStore";
+import { router } from "expo-router";
+
 export default function Landing() {
+  const { token, loading } = useAuthStore();
+  const { isDarkMode } = useThemeStore();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState("");
   const [isLogin, setIsLogin] = React.useState(true);
 
@@ -39,19 +34,18 @@ export default function Landing() {
     toggleLogin();
   };
 
-  const {token} = useAuthStore()
-
-
+  // useEffect(() => {
+  //   if (token) {
+  //     router.replace("/");
+  //   }
+  // }, [token]);
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className=" flex-1 space-x-32"
+      className={`flex-1 ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}
     >
-      <ScrollView
-        keyboardShouldPersistTaps="handled"
-        
-      >
+      <ScrollView keyboardShouldPersistTaps="handled">
         <SafeAreaView className="flex-1 px-4">
           <View className="items-center">
             <AppLogo className="w-32 h-32" />
@@ -70,9 +64,11 @@ export default function Landing() {
             />
           </View>
 
-          {isLogin ? <LoginView loading={loading} /> : <SignupView loading={loading} />}
-
-        
+          {isLogin ? (
+            <LoginView loading={loading} />
+          ) : (
+            <SignupView loading={loading} />
+          )}
 
           {error ? <Text className="text-red-500">{error}</Text> : null}
         </SafeAreaView>

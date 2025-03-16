@@ -1,43 +1,36 @@
-import { Link, Redirect, router, Tabs } from 'expo-router';
+import { Ionicons } from "@expo/vector-icons";
+import { Link, Redirect, router, Tabs } from "expo-router";
+import { useEffect } from "react";
+import { TouchableOpacity } from "react-native";
 
-import { HeaderButton } from '../../components/HeaderButton';
-import { TabBarIcon } from '../../components/TabBarIcon';
-import { useAuthStore } from '~/store/authStore';
-import { useEffect } from 'react';
-import { TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { HeaderButton } from "../../components/HeaderButton";
+import { TabBarIcon } from "../../components/TabBarIcon";
 
+import { useAuthStore } from "~/store/authStore";
+import { useThemeStore } from "~/store/themeStore";
 export default function TabLayout() {
+  const { token } = useAuthStore();
+  const { isDarkMode } = useThemeStore();
 
-    const{token} = useAuthStore()
-  
-  if(!token) {
+  if (!token) {
     return <Redirect href="/landing" />;
   }
-  const CustomTabButton = ({ onPress }: { onPress: () => void }) => (
-    <TouchableOpacity style={{
-      backgroundColor: "#007AFF",
-      width: 60,
-      height: 60,
-      borderRadius: 30,
-      justifyContent: "center",
-      alignItems: "center",
-      marginBottom: 20,
-    }} onPress={onPress}>
-      <Ionicons name="add-circle-outline" size={40} color="white" />
-    </TouchableOpacity>
-  );
-  
+
+
   return (
     <Tabs
-  
       screenOptions={{
-        tabBarActiveTintColor: 'black',
-      }}>
+        tabBarActiveTintColor: isDarkMode ? "white" : "black",
+        tabBarInactiveTintColor: isDarkMode ? "white" : "grey",
+        tabBarStyle: {
+          backgroundColor: isDarkMode ? "#111827" : "white",
+        },
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Tab One',
+          title: "Tab One",
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           headerRight: () => (
             <Link href="/modal" asChild>
@@ -49,21 +42,20 @@ export default function TabLayout() {
       <Tabs.Screen
         name="action"
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="plus-circle" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="plus-circle" color={color} />
+          ),
         }}
         listeners={() => ({
           tabPress: (e) => {
             e.preventDefault();
-            router.push('/addModal');
+            router.push("/addModal");
           },
         })}
       />
 
-     
- 
-     
       <Tabs.Screen
-        name="two"
+        name="settings"
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="gear" color={color} />,
         }}

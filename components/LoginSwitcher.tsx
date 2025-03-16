@@ -1,19 +1,27 @@
-import { View, Text, Pressable } from 'react-native'
-import React from 'react'
-
-
+import { Pressable, Text } from "react-native";
+import { useThemeStore } from "~/store/themeStore";
 
 interface LoginSwitcherProps {
-    isSelect: boolean
-    onPress: () => void
-    title: string
+  title: string;
+  onPress: () => void;
+  isSelect: boolean;
 }
 
 export default function LoginSwitcher({ title, onPress, isSelect }: LoginSwitcherProps) {
-  return (
-       <Pressable className={`${isSelect ? 'border-black pb-2 border-b-4 ' : ''} w-40 items-center`} onPress={ onPress}>
+  const { isDarkMode } = useThemeStore();
 
-       <Text className='text-2xl font-bold'>{title }</Text>
-       </Pressable>
-  )
+  return (
+    <Pressable 
+      className={`${
+        isSelect 
+          ? `border-b-4 ${isDarkMode ? 'border-white' : 'border-black'}` 
+          : ''
+      } w-40 items-center pb-2`} 
+      onPress={onPress}
+    >
+      <Text className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>
+        {title}
+      </Text>
+    </Pressable>
+  );
 }

@@ -1,23 +1,51 @@
-import { forwardRef } from 'react';
-import { Text, TouchableOpacity, TouchableOpacityProps, View } from 'react-native';
+import { ActivityIndicator, Pressable, Text, View } from "react-native";
+import { useThemeStore } from "~/store/themeStore";
 
-type ButtonProps = {
+interface ButtonProps {
   title: string;
+  onPress: () => void;
   className?: string;
-} & TouchableOpacityProps;
+  disabled?: boolean;
+  loading?: boolean;
+}
 
-export const Button = forwardRef<View, ButtonProps>(({ title, className, ...touchableProps }, ref) => {
+export function Button({
+  title,
+  onPress,
+  className = "",
+  disabled = false,
+  loading = false,
+}: ButtonProps) {
+  const { isDarkMode } = useThemeStore();
+
   return (
-    <TouchableOpacity
-      ref={ref}
-      {...touchableProps}
-      className={`p-4 ${className}`}>
-      <Text className={styles.buttonText}>{title}</Text>
-    </TouchableOpacity>
+    <Pressable
+      onPress={onPress}
+      disabled={disabled || loading}
+      className={`p-4 ${
+        disabled
+          ? "bg-gray-300"
+          : isDarkMode
+          ? "bg-blue-600"
+          : "bg-blue-500"
+      } ${className}`}
+    >
+      {loading ? (
+        <ActivityIndicator color="white" />
+      ) : (
+        <Text
+          className={`text-center text-white font-bold ${
+            disabled ? "text-gray-500" : ""
+          }`}
+        >
+          {title}
+        </Text>
+      )}
+    </Pressable>
   );
-});
+}
 
 const styles = {
-  button: 'items-center bg-indigo-500 rounded-[28px] shadow-md p-4',
-  buttonText: 'text-white text-lg font-semibold text-center',
+  button: "items-center bg-indigo-500 rounded-[28px] shadow-md p-4",
+  buttonText: "text-white text-lg font-semibold text-center",
 };

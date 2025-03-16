@@ -1,76 +1,86 @@
-import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth'
-import { create } from 'zustand'
-import { persist, createJSONStorage } from 'zustand/middleware'
-import { auth } from '~/utils/firebase'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import Toast from 'react-native-toast-message'
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
+import Toast from "react-native-toast-message";
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+
+import { auth } from "~/utils/firebase";
 
 type AuthStore = {
-    token: string
-    init: ()=>void
-    setToken: (token: string) => void
-    login: (email: string, password: string) => Promise<boolean>
-    logout: () => void
-    signUp: (email: string, password: string) => void
-    cleanupAuthListener: () => void;
-    error?: string
-    loading: boolean;
- 
-}
+  token: string;
+  init: () => void;
+  setToken: (token: string) => void;
+  login: (email: string, password: string) => Promise<boolean>;
+  logout: () => void;
+  signUp: (email: string, password: string) => void;
+
+  error?: string;
+  loading: boolean;
+  subScription: any;
+};
 
 export const useAuthStore = create<AuthStore>()(
-    persist(
-        (set, get) => ({
-     
-        cleanupAuthListener:()=>{},
-      token: '',
+  persist(
+    (set, get) => ({
+      token: "",
+      subScription: null,
       loading: false,
-      init:()=>{
+      init: () => {
         onAuthStateChanged(auth, async (user) => {
-            if(user){
-                const token = await user.getIdToken()
-             
-                set({ token });
-            }
+          if (user) {
+            const token = await user.getIdToken();
 
-        })
+            set({ token });
+          }
+        });
       },
       setToken: (token: string) => set({ token }),
       login: async (email: string, password: string) => {
-        set({error: undefined})
+        set({ error: undefined });
         try {
-        const cred = await signInWithEmailAndPassword(auth, email, password);
-        const token = await cred.user.getIdToken(); // store the token
-        
-        set({ token }); // save token in store
-        
-return true;
+          const cred = await signInWithEmailAndPassword(auth, email, password);
+          const token = await cred.user.getIdToken(); // store the token
+
+          set({ token }); // save token in store
+
+          return true;
         } catch (error) {
-            console.log(error)
-         
-            Toast.show({
-              type: 'error',
-              text1: 'Login Failed',
-              text2: 'Please check your credentials and try again.'
-            });
-              
+          console.log("here", error);
+
+          Toast.show({
+            type: "error",
+            text1: "Login Failed",
+            text2: "Please check your credentials and try again.",
+          });
+
           set({ error: error as string });
-          return false
+          return false;
         }
       },
-      logout: () => {
-        set({ token: '', error: undefined });
-        console.log('logged out', get().token)
+      logout: async () => {
+        try {
+          await signOut(auth);
+          set({ token: "", error: undefined });
+        } catch (error) {
+          console.error("Error signing out:", error);
+          Toast.show({
+            type: "error",
+            text1: "Logout Failed",
+            text2: "Please try again.",
+          });
+        }
       },
       signUp: (email: string, password: string) => {
-
-        console.log('signing up with email:', email);
+        console.log("signing up with email:", email);
       },
-     
     }),
     {
-      name: 'auth-storage-id', // name of the item in the storage (must be unique)
-      storage: createJSONStorage(() => AsyncStorage), // (optional) by default, 'localStorage' is used
+      name: "auth-storage-id",
+      storage: createJSONStorage(() => AsyncStorage),
     },
   ),
-)
+);
