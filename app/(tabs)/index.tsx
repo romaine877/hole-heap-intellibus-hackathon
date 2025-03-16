@@ -34,22 +34,22 @@ export default function Home() {
               <PotHoleList
                 id="1"
                 image={images.pothole}
-                text="Pothole on this road"
+                text="Pothole Barbican Road"
               />
               <PotHoleList
                 id="1"
-                image={images.pothole}
-                text="Pothole on this road"
+                image={images.pothole1}
+                text="Pothole Molynes Road"
               />
               <PotHoleList
                 id="1"
-                image={images.pothole}
-                text="Pothole on this road"
+                image={images.pothole2}
+                text="Queens Avenue"
               />
               <PotHoleList
                 id="1"
-                image={images.pothole}
-                text="Pothole on this road"
+                image={images.pothole3}
+                text="Pothole "
               />
               <PotHoleList
                 id="1"

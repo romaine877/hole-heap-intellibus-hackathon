@@ -2,6 +2,30 @@ import { useAuthStore } from "~/store/authStore";
 
 const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
 
+
+type PotholeDto = {
+  id: string;
+  image: string;
+  details: string;
+  location: {
+    lat: number;
+    long: number;
+  };
+  dangerRating: number;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+};
+interface LocationDTO {
+  id: string;                
+  created_by_uid: string;     
+  latitude: number;          
+  longitude: number;      
+  date_created: Date;        
+  city: string;        
+  street_name: string;       
+}
+
 const apiRequest = async (
   endpoint: string,
   method: string = "GET",

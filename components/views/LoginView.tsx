@@ -40,9 +40,7 @@ export default function LoginView({ loading }: LoginViewProps) {
       setEmailError(("Error logging in: " + e) as string);
     }
 
-    if (token) {
-      return <Redirect href="/(tabs)" />;
-    }
+
   };
 
   return (

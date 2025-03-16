@@ -4,13 +4,21 @@ import "../global.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Redirect, router, Stack, useFocusEffect } from "expo-router";
 import { useEffect } from "react";
+import * as Sentry from '@sentry/react-native';
+
+Sentry.init({
+  dsn: 'https://6f6dcf88b984cace9a18c1b462777952@o4508988145467392.ingest.us.sentry.io/4508988147040256',
+
+  // uncomment the line below to enable Spotlight (https://spotlightjs.com)
+  // spotlight: __DEV__,
+});
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
   initialRouteName: "(tabs)",
 };
 
-export default function RootLayout() {
+export default Sentry.wrap(function RootLayout() {
   const { token, init } = useAuthStore();
   const queryClient = new QueryClient();
 
@@ -43,4 +51,4 @@ export default function RootLayout() {
       </Stack>
     </QueryClientProvider>
   );
-}
+});

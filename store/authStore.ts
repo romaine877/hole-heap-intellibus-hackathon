@@ -46,6 +46,7 @@ export const useAuthStore = create<AuthStore>()(
           const cred = await signInWithEmailAndPassword(auth, email, password);
           const token = await cred.user.getIdToken(); // store the token
 
+
           set({ token }); // save token in store
 
           return true;
@@ -83,7 +84,7 @@ export const useAuthStore = create<AuthStore>()(
             password,
           );
           const token = await cred.user.getIdToken(); // store the token
-
+        
           set({ token }); // save token in store
 
           return true;

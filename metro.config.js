@@ -1,10 +1,12 @@
-const { getDefaultConfig } = require('expo/metro-config');
 const { withNativeWind } = require('nativewind/metro');
+const {
+  getSentryExpoConfig
+} = require("@sentry/react-native/metro");
 
 /** @type {import('expo/metro-config').MetroConfig} */
 // eslint-disable-next-line no-undef
 module.exports = (async (env) => {
-  const defaultConfig = getDefaultConfig(__dirname);
+  const defaultConfig = getSentryExpoConfig(__dirname);
   const { transformer, resolver } = defaultConfig;
   config = {
     ...defaultConfig,
@@ -20,6 +22,3 @@ module.exports = (async (env) => {
   };
   return withNativeWind(config, { input: './global.css' });
 })();
-
-
-

@@ -25,11 +25,12 @@ export default function TextField({
         {title}
       </Text>
       <TextInput
+      
         value={value}
         onChangeText={onChangeText}
         className={`border p-2 rounded-md ${
           isDarkMode
-            ? "bg-gray-400 border-gray-200 text-white"
+            ? "bg-white border-gray-200 text-white"
             : "bg-white border-gray-300 text-black"
         }`}
       />

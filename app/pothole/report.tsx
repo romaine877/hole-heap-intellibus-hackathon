@@ -10,6 +10,7 @@ import Toast from "react-native-toast-message";
 import { Button } from "~/components/Button";
 import TextField from "~/components/TextField";
 import { IUploadedImage, pickImage } from "~/helpers/imagePicker";
+import { usePotHoleStore } from "~/store/potholeStore";
 import { useThemeStore } from "~/store/themeStore";
 import { db } from "~/utils/firebase";
 
@@ -19,12 +20,13 @@ export default function ReportScreen() {
     undefined,
   );
   const { isDarkMode } = useThemeStore();
-  
+
   const handleSubmit = async () => {};
 
   const handlePictureUpload = async () => {
     const image = await pickImage();
     setPhoto(image);
+
   };
   return (
     <>
@@ -44,10 +46,11 @@ export default function ReportScreen() {
                 color={isDarkMode ? "white" : "black"}
               />
             </TouchableOpacity>
+        
             <Text
               className={`ml-4 text-xl font-bold ${isDarkMode ? "text-white" : "text-black"}`}
             >
-              Pothole Details
+              Pothole Alerts
             </Text>
           </View>
         </View>
