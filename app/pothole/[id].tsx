@@ -30,7 +30,7 @@ export default function PotholeDetailsScreen() {
           <Text className="mt-4 text-2xl text-center font-bold pb-8">
             Barbican Road
           </Text>
-          <Image source={images.pothole} resizeMode="contain" className=" h-2/5 rounded-lg" />
+          <Image source={images.pothole} resizeMode="contain" className=" h-2/6 rounded-lg" />
 
           <Text className="mt-4 text-2xl text-center font-bold">
             Description

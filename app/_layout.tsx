@@ -35,6 +35,18 @@ export default function RootLayout() {
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="landing" options={{ headerShown: false }} />
       <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="pothole" options={{ headerShown: false }} />
+
+     
+      <Stack.Screen
+        name="addModal"
+        options={{
+          presentation: 'transparentModal',
+          animation: 'fade',
+          headerShown: false,
+          
+        }}
+      />
     </Stack>
   );
 }
