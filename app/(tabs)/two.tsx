@@ -1,22 +1,38 @@
-import { Stack } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Switch } from "react-native";
+import React from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import images from "~/constants/images";
+import AppLogo from "../../assets/app-logo.svg";
+import { router, Stack } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
-import { ScreenContent } from '~/components/ScreenContent';
-
-export default function Home() {
+export default function SettingsScreen() {
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
-      <View className="bg-red-600">
-        <ScreenContent path="app/(tabs)/two.tsx" title="Tab Two" />
-      </View>
+      <SafeAreaView className="flex-1">
+        <View className="w-full items-center">
+        
+    
+          <AppLogo className="w-32 h-32" />
+        </View>
+
+       <View className="flex-row w-full justify-between p-8" >
+
+          <Text className="text-xl font-bold">Dark Mode</Text>
+         <Switch/>
+       </View>
+       <View className="flex-row w-full justify-between p-8" >
+
+          <Text className="text-xl font-bold">Dark Mode</Text>
+         <Ionicons name="chevron-forward" size={24} />
+       </View>
+       <View className="flex-row w-full justify-between p-8" >
+
+          <Text className="text-xl font-bold">Dark Mode</Text>
+         <Switch/>
+       </View>
+      </SafeAreaView>
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-  },
-});
