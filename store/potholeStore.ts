@@ -1,3 +1,4 @@
+import { QueryClient } from "@tanstack/react-query";
 import Toast from "react-native-toast-message";
 import { create } from "zustand";
 import {
@@ -19,6 +20,8 @@ type LatLong = {
   long: number;
 };
 
+const queryClient = new QueryClient();
+
 export interface PotHoleState {
   streetName: (coordinates: LatLong) => void;
   report: () => void;
@@ -26,7 +29,7 @@ export interface PotHoleState {
   getPotholes: () => void;
   confirmExist: () => void;
   confirmFixed: () => void;
-  sendLocation: () => void;
+  sendLocation: (request: any) => void;
 }
 
 export const usePotHoleStore = create<PotHoleState>((set) => ({
@@ -48,8 +51,12 @@ export const usePotHoleStore = create<PotHoleState>((set) => ({
   },
   rate: () => {},
   getPotholes: async () => {
-    const response = await getPotholes();
-
+    const response = await queryClient.fetchQuery({
+      queryKey: ["potholes"],
+      queryFn: () => getPotholes(),
+      staleTime: 1000 * 60,
+    });
+    console.log(response);
   },
   confirmExist: () => {
     confirmPotholeExists({});
@@ -57,7 +64,8 @@ export const usePotHoleStore = create<PotHoleState>((set) => ({
   confirmFixed: () => {
     confirmPotholeFixed({});
   },
-  sendLocation: () => {
-    getPotholes();
+  sendLocation: (request: any) => {
+    console.log(request);
+    sendLocation(request);
   },
 }));

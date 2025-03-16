@@ -1,15 +1,15 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Link } from "expo-router";
-import React from "react";
+import { Image } from "expo-image";
 import {
+  Image as RNImage,
   View,
   Text,
-  Image,
   ImageSourcePropType,
   Pressable,
+  Platform,
 } from "react-native";
+import { Link } from "expo-router";
 
-import images from "~/constants/images";
 import { useThemeStore } from "~/store/themeStore";
 interface PotholeListProps {
   image: ImageSourcePropType;
@@ -25,7 +25,16 @@ export default function PotHoleList({ image, text, id }: PotholeListProps) {
       <Pressable>
         <View className={`m-6 ${isDarkMode ? "bg-gray-800" : "bg-gray-200"}`}>
           <View className="w-full flex justify-between items-center flex-row p-6 rounded">
-            <Image source={image} className="w-28 h-28 rounded-lg" />
+            {Platform.OS !== "web" ? (
+              <RNImage source={image} className="w-24 h-24 rounded-lg" />
+            ) : (
+              <Image
+                source={image}
+                contentFit="contain"
+                className="w-24 h-24 rounded-lg"
+              />
+            )}
+
             <Text
               className={`text-2xl w-48 text-center ${isDarkMode ? "text-white" : "text-black"}`}
             >

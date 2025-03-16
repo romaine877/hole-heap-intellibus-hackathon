@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
+  createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
@@ -16,7 +17,7 @@ type AuthStore = {
   setToken: (token: string) => void;
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
-  signUp: (email: string, password: string) => void;
+  signUp: (email: string, password: string) => Promise<boolean>;
 
   error?: string;
   loading: boolean;
@@ -74,8 +75,23 @@ export const useAuthStore = create<AuthStore>()(
           });
         }
       },
-      signUp: (email: string, password: string) => {
-        console.log("signing up with email:", email);
+      signUp: async (email: string, password: string) => {
+        try {
+          const cred = await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password,
+          );
+          const token = await cred.user.getIdToken(); // store the token
+
+          set({ token }); // save token in store
+
+          return true;
+        } catch (error) {
+          console.log("here", error);
+
+          return false;
+        }
       },
     }),
     {

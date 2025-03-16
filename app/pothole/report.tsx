@@ -1,15 +1,17 @@
 import { Ionicons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
 import { router, Stack } from "expo-router";
-import { useState } from "react";
+import { collection, getDocs, onSnapshot } from "firebase/firestore";
+import { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import Toast from "react-native-toast-message";
 
 import { Button } from "~/components/Button";
 import TextField from "~/components/TextField";
 import { IUploadedImage, pickImage } from "~/helpers/imagePicker";
 import { useThemeStore } from "~/store/themeStore";
+import { db } from "~/utils/firebase";
 
 export default function ReportScreen() {
   const [dangerRating, setDangerRating] = useState(3);
@@ -17,7 +19,7 @@ export default function ReportScreen() {
     undefined,
   );
   const { isDarkMode } = useThemeStore();
-
+  
   const handleSubmit = async () => {};
 
   const handlePictureUpload = async () => {
